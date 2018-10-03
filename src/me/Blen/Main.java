@@ -1,5 +1,6 @@
 package me.Blen;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ public class Main {
         pairThree.setBalance(200);
         arrayAccPair.add(pairThree);
 
-        for (AccountPair pairEach : arrayAccPair) {
+        int i=1;
+        do{
             System.out.println("Please enter your Account number");
             Scanner scan = new Scanner(System.in);
             int userAccountEntry = scan.nextInt();
@@ -41,37 +43,50 @@ public class Main {
             int userPinEntry = scan.nextInt();
             scan.nextLine();
 
-            if (userAccountEntry == pairEach.getAccountNum() && userPinEntry == pairEach.getPin()) {
-                System.out.println("Do you want to make a withdrawal or a deposit?");
-                String choice = scan.nextLine();
 
-                if (choice.equalsIgnoreCase("withdrawal")) {
-                    System.out.println(" You chose withdrawal");
-                    System.out.println("Please enter the amount of money to withdraw");
-                    double amountToWithdraw = scan.nextDouble();
-                    scan.nextLine();
 
-                    if(pairEach.getBalance()>= amountToWithdraw){
-                        double newBalance = pairEach.getBalance() - amountToWithdraw;
+            for (AccountPair pairEach : arrayAccPair) {
+
+                if (userAccountEntry == pairEach.getAccountNum() && userPinEntry == pairEach.getPin()) {
+                    System.out.println("Do you want to make a withdrawal or a deposit?");
+                    String choice = scan.nextLine();
+
+                    if (choice.equalsIgnoreCase("withdrawal")) {
+                        System.out.println(" You chose withdrawal");
+                        System.out.println("Please enter the amount of money to withdraw");
+                        double amountToWithdraw = scan.nextDouble();
+                        scan.nextLine();
+
+                        if(pairEach.getBalance()>= amountToWithdraw){
+                            double newBalance = pairEach.getBalance() - amountToWithdraw;
+                            pairEach.setBalance(newBalance);
+                            System.out.println("You have made a withdrawal of " + amountToWithdraw + "and your new balance is " + pairEach.getBalance());
+                        }else{
+                            System.out.println("You do not have enough balance in your account");
+                        }
+                    }else if(choice.equalsIgnoreCase("deposit")){
+                        System.out.println("You chose deposit");
+                        System.out.println("Please enter the amount you would like to deposit");
+                        double amountToDeposit = scan.nextDouble();
+                        scan.nextLine();
+
+                        double newBalance = pairEach.getBalance() + amountToDeposit;
                         pairEach.setBalance(newBalance);
-                        System.out.println("You have made a withdrawal of " + amountToWithdraw + "and your new balance is " + pairEach.getBalance());
-                    }else{
-                        System.out.println("You do not have enough balance in your account");
+                        System.out.println("You have made a deposit of " + amountToDeposit + " your new balance is " + pairEach.getBalance());
                     }
-                }else if(choice.equalsIgnoreCase("deposit")){
-                    System.out.println("You chose deposit");
-                    System.out.println("Please enter the amount you would like to deposit");
-                    double amountToDeposit = scan.nextDouble();
-                    scan.nextLine();
-
-                    double newBalance = pairEach.getBalance() + amountToDeposit;
-                    pairEach.setBalance(newBalance);
-                    System.out.println("You have made a deposit of " + amountToDeposit + " your new balance is " + pairEach.getBalance());
+                }else if(userAccountEntry != pairEach.getAccountNum() || userPinEntry != pairEach.getPin()){
+                    break;
                 }
-            }else if(userAccountEntry != pairEach.getAccountNum() || userPinEntry != pairEach.getPin()){
-
             }
-        }
+            if(i<3)
+            {
+                System.out.println("Try again");
+            }
+
+            i++;
+        }while(i<=3);
+        System.out.println("You have been locked out of your accounts");
+
     }
 }
 
