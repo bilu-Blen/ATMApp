@@ -8,11 +8,12 @@ import java.util.Scanner;
 
 public class Main {
     static ArrayList<AccountPair> arrayAccPair = new ArrayList<AccountPair>();
+    static Scanner scan = new Scanner(System.in);
+
 
     public static void main(String[] args) {
         // write your code here
 
-        Scanner scan = new Scanner(System.in);
         AccountPair pair = new AccountPair();
 
         pair.setAccountNum(123456);
@@ -32,13 +33,14 @@ public class Main {
         pairThree.setBalance(200);
         arrayAccPair.add(pairThree);
 
-        System.out.println("Welcome, what do you want to do today? Create an account or perform a transaction");
+        optionMethod();
         String createTrans = scan.nextLine();
-
         int i = 1;
+
 
         if (createTrans.equalsIgnoreCase("create")) {
             newMethod("create");
+            optionMethod();
         } else if (createTrans.equalsIgnoreCase("transaction")) {
             do {
                 System.out.println("Please enter your Account number");
@@ -49,8 +51,9 @@ public class Main {
                 int userPinEntry = scan.nextInt();
                 scan.nextLine();
 
-
                 for (AccountPair pairEach : arrayAccPair) {
+
+
                     if (userAccountEntry == pairEach.getAccountNum() && userPinEntry == pairEach.getPin()) {
                         System.out.println("Do you want to make a withdrawal or a deposit?");
                         String choice = scan.nextLine();
@@ -68,6 +71,7 @@ public class Main {
                             } else {
                                 System.out.println("You do not have enough balance in your account");
                             }
+                            i=6;
                         } else if (choice.equalsIgnoreCase("deposit")) {
                             System.out.println("You chose deposit");
                             System.out.println("Please enter the amount you would like to deposit");
@@ -77,22 +81,32 @@ public class Main {
                             double newBalance = pairEach.getBalance() + amountToDeposit;
                             pairEach.setBalance(newBalance);
                             System.out.println("You have made a deposit of " + amountToDeposit + " your new balance is " + pairEach.getBalance());
+//                            optionMethod();
+                            i=6;
+                            break;
                         }
-                    } else if (userAccountEntry != pairEach.getAccountNum() || userPinEntry != pairEach.getPin() && i < 3) {
-                        System.out.println("Try again");
                         break;
-                    }
-                }
-//                if (i < 3) {
-//                    System.out.println("Try again");
-//                }
 
-                i++;
+                    }
+
+                }
+            if (i <= 3) {
+                System.out.println("Try again");
+
+            } else {
+                break;
+            }
+
+            i++;
+
+
             }
             while (i <= 3) ;
+            if(i==6){
+                optionMethod();
+            }else
             System.out.println("You have been locked out of your accounts");
         }
-
     }
 
     public static void newMethod(String create) {
@@ -115,6 +129,10 @@ public class Main {
         arrayAccPair.add(userPair);
 
         System.out.println("Thank you for creating an account at our bank. " + " Your account number is " +  userPair.getAccountNum() + " Your balance is " +userPair.getBalance());
+    }
+
+    public static void optionMethod(){
+        System.out.println("Welcome, what do you want to do today? Create an account or perform a transaction");
     }
 
 }
